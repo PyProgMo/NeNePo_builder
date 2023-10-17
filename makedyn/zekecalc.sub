@@ -1,0 +1,27 @@
+#!/bin/bash 
+#SBATCH --nodes=1
+inp1#SBATCH --cpus-per-task=inp1
+inp2#SBATCH --mem-per-cpu=inp2
+#SBATCH -p batch
+#SBATCH --time=60-0
+
+inp3dynste=inp3 #20 # Dynamic steps
+inp4deltat=inp4 #5 #dt in fs
+
+module load g16
+name=Traj_$SLURM_ARRAY_TASK_ID
+num=$SLURM_ARRAY_TASK_ID
+
+cp -r ${SLURM_SUBMIT_DIR}/${name} /scratch/${SLURM_JOBID}/${name}
+cd /scratch/${SLURM_JOBID}/${name}
+printf -v num %04d ${num}
+cp dynamics_${num}.in coord.xyz
+
+./run_dynamic.py $dynste $deltat
+# check for error
+num=$(< "time.txt" wc -l)
+if [ "$num" -ge "$dynste" ]; then
+	mv /scratch/${SLURM_JOBID}/${name} ${SLURM_SUBMIT_DIR}/${name}.out
+else
+	mv /scratch/${SLURM_JOBID}/${name} ${SLURM_SUBMIT_DIR}/${name}.out_err
+fi
