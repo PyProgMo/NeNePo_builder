@@ -1,0 +1,57 @@
+#!/usr/bin/env python3
+import os, sys, shutil
+import numpy as np
+from joblib import Parallel, delayed
+import get_signal_10 
+
+#spec_p = 'spec_pump_01'
+head_end = '.out'
+target = 'Average_signal_out'
+plot_script = 'generate_plot_freqs.py'
+pfad = os.getcwd()
+tstep = int(sys.argv[1]) # steplen in fs
+dynl = int(sys.argv[2]) # number of steps
+times = np.arange(0, dynl*tstep+tstep, tstep)
+#IP_file = ['rhombus_Energy.out', 2] # Name of file and number of column
+
+def readin_std(name):
+    time = []
+    sig = []
+    with open(name) as f:
+        data = f.readlines()
+        for i in data:
+            s = i.split(' ')
+            time.append(float(s[0]))
+            sig.append(float(s[1].split('\n')[0]))
+    return time, sig
+
+def getfl(ending):
+    files = os.listdir()
+    filel = []
+    for i in files:
+        if ending in i:
+            filel.append(i)
+    return filel
+
+def col_spec(files):
+    os.chdir(files)
+    get_signal_10.getspec(times, getfl('_Energy.out')[0])
+    _, datan = readin_std('signal.out')
+    os.chdir(pfad)
+    return(datan)
+
+try:
+    os.system('./remnonedyns.py')
+except:
+    print('Error while running remnonedyns.py')
+
+outfiles = getfl(head_end)
+datan = Parallel(n_jobs=-1)(delayed(col_spec)(outfiles[i]) for i in range(len(outfiles)))
+data = np.einsum('ij->j', datan)
+
+data_av = np.divide(data, len(outfiles))
+os.chdir(target)
+os.system('truncate -s 0 signal_sum.out')
+for i in range(len(data_av)):
+    os.system("echo {}\t{} >> signal_sum.out".format(times[i], data_av[i]))
+os.system('./{}'.format(plot_script))
