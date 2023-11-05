@@ -21,6 +21,8 @@ def wrdynstart():
         f.write('sbatch --array=0-{}%{} zekecalc.sub\n'.format(o.trajnum-1, o.trajnum))
         f.write('mkdir collectslurm\n')
 
+# write subscript with Info for slurm
+# for i element n replace inpi with variable inpi
 def wrzekecalc():
     os.chdir(sdir)
     with open(o.rawsubscr, 'r') as f:

@@ -1,7 +1,7 @@
 %Nproc=4
 %Mem=11520Mb
 %chk=forcecat.chk
-#P TPSSh GENECP symmetry=None Guess(Read,TCheck)
+#P UTPSSh GENECP symmetry=None Guess(Read,TCheck)
 
 Comments
 

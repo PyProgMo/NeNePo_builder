@@ -5,14 +5,14 @@
 
 #Wigner Sampler Options:            # samppath/wsinpfiles/wsinput1
 samppath    = '../ws_rhombus/.'     # path of Wigner Sampler
-wsinpfiles  = 'TPSSh_tzvp'              # path of opt struct inside samppath
-qchemmethod = 'gaussian'
-wsinput1    = 'forcean.fchk'        # ws input name inside wsinpfiles
-wsinput2    = 'ani.log'
-temperature = 30                   # WS Temperature in K
+wsinpfiles  = 'TPSSh_tzvpU'    # path of opt struct inside samppath
+qchemmethod = 'gaussian'                      # carry out calculation e. g. 'gaussian' or 'qchem', implement different methods in VV.py
+wsinput1    = 'force.fchk'          # ws input name inside wsinpfiles
+wsinput2    = 'optstruct.log'
+temperature = 20                    # WS Temperature in K
 wsoutfile   = 'dynamics'            # name of .in files
 wsfile      = 'Wignernointerface.py'
-trajnum     = 1000               # number n of trajectories, numbering begins with 0 to n-1
+trajnum     = 50               # number n of trajectories, numbering begins with 0 to n-1
 
 #ensemble dynamicsname = nameXXXX.in with 4 digits for numbering
 ensname     = 'dynamics'
@@ -32,11 +32,13 @@ chkln       = {                     # name of fchk files
             'an':'%chk=forcean.chk\n', 
             'neut':'%chk=force.chk\n', 
             'cat':'%chk=forcecat.chk\n'}
-qchem_meth  = 'TPSSh'               # method
+qchem_an    = 'UTPSSh'              # method
+qchem_neut  = 'UTPSSh'               
+qchem_cat   = 'UTPSSh'
 gaussianinp = {                     # input line for gaussian depending on states
-            'an': '#P {} GENECP symmetry=None stable=opt Guess(Read,TCheck)\n'.format(qchem_meth),
-            'neut':'#P force {} GENECP symmetry=None Guess(Read,TCheck)\n'.format(qchem_meth),
-            'cat': '#P {} GENECP symmetry=None Guess(Read,TCheck)\n'.format(qchem_meth)}
+            'an': '#P {} GENECP symmetry=None stable=opt Guess(Read,TCheck)\n'.format(qchem_an),
+            'neut':'#P force {} GENECP symmetry=None Guess(Read,TCheck)\n'.format(qchem_neut),
+            'cat': '#P {} GENECP symmetry=None Guess(Read,TCheck)\n'.format(qchem_cat)}
 comments    = 'Comments\n'
 mult_charge = {                     # charge and multiplicity of states
             'an': '-1 2\n',
@@ -56,7 +58,7 @@ basisname   = 'basis'
 # build input
 run_dyn_scr = 'run_dynamic.py'  # init and run VelocityVerlet
 dynstname   = 'dynstart.bash'   # script to submit job array
-steps       = 1               # number n of steps to be done leads to n+1 points
+steps       = 1000               # number n of steps to be done leads to n+1 points
 dt          = 5                 # time step delta t in [fs]
 rawsubscr   = 'zekecalcraw'     # raw sub script
 subscr      = 'zekecalc.sub'    # submission script
