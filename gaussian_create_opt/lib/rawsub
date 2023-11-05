@@ -1,0 +1,26 @@
+#!/bin/bash
+#SBATCH -p batch # partition (queue)
+#SBATCH -N 1  # number of nodes
+#SBATCH -n inp0 # number of cores
+#SBATCH --mem-per-cpu=inp1gb
+#SBATCH -t 50-00:00 # time (D-HH:MM)
+#SBATCH -o slurm.%N.%j.out # STDOUT
+#SBATCH -e slurm.%N.%j.err # STDERR
+#SBATCH --job-name=generic_calc_ML
+#. /etc/profile.d/modules.sh
+
+name="inp2"
+
+rm -r ${SLURM_SUBMIT_DIR}/${name}.out
+
+cp -r ${SLURM_SUBMIT_DIR}/${name} /scratch/${SLURM_JOBID}/${name}
+cd /scratch/${SLURM_JOBID}/${name}
+
+date > time.txt
+module load g16
+g16 inp3.com inp3.log
+formchk inp4.chk inp4.fchk
+./getxyz.py
+date >> time.txt
+
+mv /scratch/${SLURM_JOBID}/${name} ${SLURM_SUBMIT_DIR}/${name}.out
