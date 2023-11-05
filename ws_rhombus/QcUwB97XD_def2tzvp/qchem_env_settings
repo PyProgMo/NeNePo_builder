@@ -1,0 +1,48 @@
+You are running Q-Chem version: 5.1.2
+
+#
+# job setting
+#
+local host:  wux10
+current dir: /scratch/1692838/optAg4aniUdef2tzvp
+input file:  force.inp
+output file: force.inp.out
+nprocs     : 1
+nthreads   : 40
+#
+# qchem installation setting
+#
+QC:          /local/qchem-5.1.2
+QCAUX:       /local/qchem-5.1.2/qcaux
+QCPROG:      /local/qchem-5.1.2/exe/qcprog.exe
+QCPROG_S:    /local/qchem-5.1.2/exe/qcprog.exe_s
+PARALLEL:    -DPARALLEL
+QCMPI:       mpich
+#
+# qchem directory setting
+#
+qcrun:       qchem21685
+QCSCRATCH:   /sscratch/1692838
+QCLOCALSCR:  /scratch/1692838
+QCTMPDIR:    /scratch/1692838
+QCFILEPREF:  /scratch/1692838/qchem21685
+QCSAVEDIR:   
+workdirs:    /scratch/1692838/qchem21685
+workdir0:    /scratch/1692838/qchem21685
+partmpdirs =  
+#
+# parallel setting
+#
+QCRSH:           ssh
+QCMPI:           mpich
+QCMPIRUN:        /local/qchem-5.1.2/bin/mpi/mpirun_qchem
+QCMACHINEFILE:   /tmp/1692838/nodes
+wux10
+
+#
+# env setting
+#
+exported envs:   QC QCAUX QCSCRATCH QCRUNNAME QCFILEPREF QCPROG QCPROG_S GUIFILE
+remove work dirs /scratch/1692838/qchem21685.0 -- /scratch/1692838/qchem21685.0
+rm -rf /scratch/1692838/qchem21685.0
+rm -rf /scratch/1692838/qchem21685

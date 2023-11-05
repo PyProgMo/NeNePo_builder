@@ -1,0 +1,40 @@
+$comment
+  Q-Chem input file
+ 1. A line prefixed with an exclamation mark ‘!’ is treated as a comment and will be ignored by the program
+ 2. Variables are case-insensitive (as is the whole Q-CHEM input file).
+$end
+
+$molecule
+  READ geom
+$end
+ 
+$rem
+ !--GENERAL Q-CHEM SETTINGS -----------------------------------------------------------------------
+  MEM_TOTAL                 22050       ! maximum amount of ram memory (MB) 
+  MEM_STATIC                5000       ! static memory used (MB).
+  AO2MO_DISK                50000      ! specifies maximum amount of memory written to scratch files (MB) 
+  GUI                       2          ! 0: generate no checkpoint file | 2: generate fchk
+ !-------------------------------------------------------------------------------------------------
+  
+ !--SCF PROCEDURE ---------------------------------------------------------------------------------
+  SCF_ALGORITHM             DIIS       ! DIIS |DM | GDM | RCA | ROOTHAN | DIIS_GDM | DIIS_DM | RCA_DIIS
+  SCF_CONVERGENCE           8          ! SCF is converged when energy change is below 1e-X hartree
+  SCF_MAX_CYCLES            500        ! controls the maximum number of scf iterations perimetted
+  SYMMETRY_IGNORE           true       ! control whether to use symmetry and reorienation of the molecule
+ !-------------------------------------------------------------------------------------------------
+  
+ !--SPECIFICATION OF JOBTYPE ----------------------------------------------------------------------
+  JOBTYPE                   force      ! sp: single point | opt: optimization | force | pes_scan | ts | .. 
+  GEOM_OPT_MAX_CYCLES       500        ! maximum number of optimization cycles
+  GEOM_OPT_TOL_DISPLACEMENT 1200       ! convergence on maximum atomic displacement (in micro angs) 
+  GEOM_OPT_TOL_GRADIENT     300        ! convergence on maximum gradient component (x 1e-6)
+  GEOM_OPT_TOL_ENERGY       100        ! convergence on energy change (x 1e-8)
+ !-------------------------------------------------------------------------------------------------
+  
+ !--LEVEL OF THEORY -------------------------------------------------------------------------------
+  METHOD                    TPSSh      ! specifies exchange level of theory
+  BASIS                     def2-tzvp   ! specifies basis set to be used
+  UNRESTRICTED              true      ! controls the use of restricted or unrestricted orbitals
+  DFT_D			    D3_OP
+ !-------------------------------------------------------------------------------------------------
+$end
