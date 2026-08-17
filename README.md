@@ -13,8 +13,9 @@ Important note, the dynamics computation requires imports and uses the velocityv
 
 Needs the optimized anionic files. builds complete input Dynamic input for "on the fly" dynamic to get the NeNePo spectrum. 
 
-What 
+For the dynamics to run, the locally generated dynamics folder must be copied onto a node of the cluster which has slurm running (otherwise the submission script must be updated to fit the cluster protocol) and the submission script must be run to submit the N trajectory propagation jobs to the cluster. One important note is, that the python that starts the propagation (in first ionized and 2nd ionized state) is run_dynamic.py which must be able to access the relevant scripts from the provided site-packages folder. 
+The intention is, to put the required folders into the site-packages folder of the python installation on the cluster. If not possible, try to put them into the same path as run_dynamics.py (but this was never tested). 
 
-How to use this? 
+Since the Dynamics Algorithm (Velocity Verlet) is also shipped within the project, it can be further developed and improved if any changes are required. 
 
 
